@@ -1,0 +1,189 @@
+{% extends 'proto.html' %}
+{% block title %}Tinder-method to learn German{% endblock %}
+{% block subtitle %}
+<div class="header">
+    <h2>English-German cognates</h2>
+    <img src="{{ url_for('static', filename='zuender-logo-white-bg.jpg') }}" alt="Zunder Logo" class="logo">
+</div>
+<h4><a href = "https://langtools.substack.com/p/tinder-method-for-learning-german">Article</a> with details</h4>
+{% endblock %}
+{% block action %}"https://langtools.io/tinder/s"{% endblock %}
+{% block API_SUGGESTIONS %}"/api/tinder/suggestions" {% endblock %} 
+
+{% block view_specific %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleBtn = document.getElementById('lang-toggle');
+        const langValueInput = document.getElementById('lang-value');
+    
+        toggleBtn.addEventListener('click', function() {
+            if (langValueInput.value === "English") {
+                langValueInput.value = 'German'; // Update hidden input value
+                this.innerHTML = 'German -> English'; // Update button text
+            } else {
+                langValueInput.value = 'English'; // Revert hidden input value
+                this.innerHTML = 'English -> German'; // Revert button text
+            }
+        });
+    });
+</script>
+    
+    
+<script>
+    // Rule descriptions
+    const endeRulesDescriptions = {
+      1: "<b>'p'</b> to <b>'ff'</b>/<b>'f'</b>",
+      2: "<b>'p'</b> to <b>'pf'</b>",
+      3: "<b>'t'</b>/<b>'d'</b> to <b>'ss'</b>/<b>'s'</b>/<b>'ts'</b>/<b>'tz'</b>",
+      4: "<b>'t'</b> to <b>'z'</b>",
+      5: "<b>'k'</b>/<b>'gh'</b> to <b>'ch'</b>",
+      6: "<b>'d'/<b>'th'</b> to <b>'t'</b>",
+      7: "<b>'t'</b>/<b>'th'</b> to <b>'d'</b>"
+      // Add more rules as needed
+    };
+    const deenRulesDescriptions = {
+      1: "<b>'ff'</b>/<b>'f'</b> to <b>'p'</b>",
+      2: "<b>'pf'</b> to <b>'p'</b>",
+      3: "<b>'ss'</b>/<b>'s'</b>/<b>'ts'</b>/<b>'tz'</b> to <b>'t'</b>/<b>'d'</b>",
+      4: "<b>'z'</b> to <b>'t'</b>",
+      5: "<b>'ch'</b> to <b>'k'</b>/<b>'gh'</b>",
+      6: "<b>'t'</b> to <b>'d'</b>/<b>'th'</b>",
+      7: "<b>'d'</b> to <b>'t'</b>/<b>'th'</b>"
+      // Add more rules as needed
+    };
+    
+    $(document).ready(function() {
+        var rulesDescriptions;
+        if ("{{ languages[0][0] }}" == 'English') {
+            rulesDescriptions = endeRulesDescriptions; // Ensure this variable is defined elsewhere in your script or template
+        } else {
+            rulesDescriptions = deenRulesDescriptions; // Ensure this variable is defined elsewhere in your script or template
+        }
+
+        function processRuleNumbers() {
+            $('td[data-rules]').each(function() {
+                const cell = $(this);
+                // console.log(cell); // Debugging
+                const rulesString = cell.attr('data-rules'); // Use .attr() to ensure compatibility
+                const rules = rulesString.split(',').map(rule => rule.trim());
+
+                const links = rules.map(rule => {
+                    if (rulesDescriptions[rule]) {
+                        return `<a href="#" data-toggle="popover" title="Rule ${rule}" data-content="${rulesDescriptions[rule]}">${rule}</a>`;
+                    }
+                    return rule; // Fallback in case the rule description doesn't exist
+                }).join(', ');
+
+                cell.html(links);
+            });
+
+            // Initializes popovers for elements that match the selector
+            $('[data-toggle="popover"]').popover({
+                trigger: 'hover', // Changed to 'hover' for mouseover
+                html: true,
+                container: 'body' // This can help with positioning if popovers are being clipped or not showing correctly
+            });
+        }
+
+        // Process rule numbers and initialize popovers
+        processRuleNumbers();
+
+        $('#toggle-rules-btn').click(function() {
+            // Check the value of selected_language set by the server-side template
+            var selectedLanguage = "{{ selected_language }}";
+            
+            if (selectedLanguage === "German") {
+                // Toggle visibility for German to English rules
+                $('#rules-de-en').toggle();
+            } else {
+                // Toggle visibility for English to German rules
+                $('#rules-en-de').toggle();
+            }
+        });
+    });
+    </script>
+
+    
+<div class="container"  style="margin-top: 20px;">
+    <div class="row">
+        <div class="col-sm-1">
+            <!-- left column -->
+        </div>
+        <div class="col-sm-10">
+        {% if results %}
+        <table>
+            <thead>
+            <tr>
+                <th>{{ languages[0][0] }}</th>
+                <th>{{ languages[1][0] }}</th>
+                <th>
+                    <a href="#" data-toggle="popover" title="Rules" data-content="7 rules of consonant shifts.
+                    Click on the rule's number to find out more or read the <a href='https://langtools.substack.com/p/tinder-method-for-learning-german'>article</a>.">? </a>
+                    Rule(s) applied
+                </th>
+                
+            </tr>
+            </thead>
+            <tbody>
+            {% for result in results %}
+            <tr>
+                <td>{{ result[0] }} </td>
+                <td><a href="/tinder/s?w={{ result[1] }}&l={{ languages[1][0] }}">{{ result[1] }}</a></td>
+                <!-- Embed the rule numbers as a data attribute -->
+                <td data-rules="{{ result[2] }}"></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <button id="toggle-rules-btn" class="btn btn-secondary">Show me the rules</button>
+        <!-- English to German Rules -->
+        <div id="rules-en-de" style="display: none;">
+            <h3>Consonant shift rules: English to German</h3>
+            <p>1. <b>'p'</b> to <b>'ff'</b>/<b>'f'</b></p>
+            <p><i>Examples: 'shi<u>p</u>' in English is 'Schi<u>ff</u>' in German</i></p>
+            <p>2. <b>'p'</b> to <b>'pf'</b></p>
+            <p><i>Examples: compare '<u>p</u>epper' with '<u>Pf</u>effer', and '<u>p</u>lough' with '<u>Pf</u>lug'.</i></p>
+            <p>3. <b>'t'</b>/<b>'d'</b> to <b>'ss'</b>/<b>'s'</b>/<b>'ts'</b>/<b>'tz'</b></p>
+            <p><i>Examples: 'ea<u>t</u>' in English vs. 'e<u>ss</u>en' in German, or 'se<u>t</u>' in English vs 'se<u>tz</u>en' in German</i></p>
+            <p>4. <b>'t'</b> to <b>'z'</b></p>
+            <p><i>Examples: 'tinder' in English vs. 'Zunder' in German</i></p>
+            <p>5. <b>'k'</b>/<b>'gh'</b> to <b>'ch'</b></p>
+            <p><i>Examples: Hence 'ma<u>k</u>e' becomes 'ma<u>ch</u>en' and 'ni<u>gh</u>t' becomes 'Na<u>ch</u>t'</i></p>
+            <p>6. <b>'d'</b>/<b>'th'</b> to <b>'t'</b></p>
+            <p><i>Examples: This is why '<u>d</u>ay' and '<u>T</u>ag', 'fa<u>th</u>er' and 'Va<u>t</u>er' are related. Also ‘fol<u>d</u>' with 'fal<u>t</u>en', 'hol<u>d</u>' with 'hal<u>t</u>en’</i></p>
+            <p>7. <b>'t'</b>/<b>'th'</b> to <b>'d'</b></p>
+            <p><i>Examples: Thus, '<u>th</u>ink' aligns with '<u>d</u>enken', '<u>th</u>irst' with '<u>D</u>urst', 'sou<u>th</u>' with 'Sü<u>d</u>en'</i></p>
+        </div>
+
+        <!-- German to English Rules -->
+        <div id="rules-de-en" style="display: none;">
+            <h3>Consonant shift rules: German to English</h3>
+            <p>1. <b>'ff'</b>/<b>'f'</b> to <b>'p'</b></p>
+            <p><i>Examples: 'shi<u>p</u>' in English is 'Schi<u>ff</u>' in German</i></p>
+            <p>2 <b>'pf'</b> to <b>'p'</b></p>
+            <p><i>Examples: compare '<u>p</u>epper' with '<u>Pf</u>effer', and '<u>p</u>lough' with '<u>Pf</u>lug'.</i></p>
+            <p>3. <b>'ss'</b>/<b>'s'</b>/<b>'ts'</b>/<b>'tz'</b> to <b>'t'</b>/<b>'d'</b></p>
+            <p><i>Examples: 'ea<u>t</u>' in English vs. 'e<u>ss</u>en' in German, or 'se<u>t</u>' in English vs 'se<u>tz</u>en' in German</i></p>
+            <p>4. <b>'z'</b> to <b>'t'</b></p>
+            <p><i>Examples: 'tinder' in English vs. 'Zunder' in German</i></p>
+            <p>5. <b>'ch'</b> to <b>'k'</b>/<b>'gh'</b></p>
+            <p><i>Examples: Hence 'ma<u>k</u>e' becomes 'ma<u>ch</u>en' and 'ni<u>gh</u>t' becomes 'Na<u>ch</u>t'</i></p>
+            <p>6. <b>'t'</b> to <b>'d'</b>/<b>'th'</b></p>
+            <p><i>Examples: This is why '<u>d</u>ay' and '<u>T</u>ag', 'fa<u>th</u>er' and 'Va<u>t</u>er' are related. Also ‘fol<u>d</u>' with 'fal<u>t</u>en', 'hol<u>d</u>' with 'hal<u>t</u>en’</i></p>
+            <p>7. <b>'d'</b> to <b>'t'</b>/<b>'th'</b></p>
+            <p><i>Examples: Thus, '<u>th</u>ink' aligns with '<u>d</u>enken', '<u>th</u>irst' with '<u>D</u>urst', 'sou<u>th</u>' with 'Sü<u>d</u>en'</i></p>
+        </div>
+        
+        {% else %}
+            {% if submitted %}
+                <p>No results found.</p>
+            {% endif %}
+        {% endif %}
+        </div>
+        <div class="col-sm-1">
+            <!-- right column -->
+        </div>
+    </div> <!-- end row -->
+</div> <!-- end container -->
+{% endblock %}

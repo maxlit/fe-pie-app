@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}language tools{% endblock %}
+
+{% block content %}
+    <div style="margin-top: 20px;">
+        <div style="display: flex; justify-content: center;">
+        <div style="width: 100%;">
+            <div style="text-align: center;">
+            <h1>Unconventional tools for language learning</h1>
+            </div>
+        </div>
+        </div>
+    </div>
+  
+    
+    <div style="margin-top: 30px;">
+        <div style="display: flex; justify-content: center;">
+          <table style="width: 100%; margin-left: 50px; margin-right: 50px;">
+            <tr>
+              <th style="text-align: left;">App Name</th>
+              <th style="text-align: left;">Description</th>
+              <th style="text-align: left;">Link</th>
+              <th style="text-align: left;">Articles</th>
+              <th style="text-align: left;">Repo</th>
+            </tr>
+            <tr>
+              <td style="margin-left: 10px;">PIE</td>
+              <td>Proto-Indo-European language dictionary/viz/dashboard</td>
+              <td><a href="/pie">langtools.io/pie</a></td>
+              <td><a href="https://langtools.substack.com/p/intro-to-proto-languages">[1]</a></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="margin-left: 10px;">Zunder/tinder</td>
+              <td>English-German cognates dictionary</td>
+              <td><a href="/tinder">langtools.io/tinder</a></td>
+              <td><a href="https://langtools.substack.com/p/tinder-method-for-learning-german">[1]</a> <a href="https://langtools.substack.com/p/problems-with-the-tinder-method-of">[2]</a></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="margin-left: 10px;">grepbible</td>
+              <td>Learn the languages as if you were in 1800 (via parallel Bible translations)</td>
+              <td><a href="/gb">langtools.io/gb</a></td>
+              <td><a href="https://langtools.substack.com/p/learning-languages-as-if-its-the">[1]</a></td>
+              <td><a href="https://github.com/maxlit/grepbible-server">github</a></td>
+            </tr>
+            <!--<tr>
+              <td>PSL</td>
+              <td>Proto-Semitic language dictionary/viz/dashboard</td>
+              <td><a href="/psl">langtools.io/pie</a></td>
+            </tr>-->
+            <tr>
+              <td style="margin-left: 10px;">5* annotation</td>
+              <td>(technical) Tool for manual data annotation (e.g. to run NLP on own datasets)</td>
+              <td></td>
+              <td></td>
+              <td><a href="https://gitlab.com/maxlit/csv-five-star-annotation">gitlab</a></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      
+      
+      
+{% endblock %}
+{% block footer %}{% endblock %}

@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container first-container col-sm-12 pull-left">
+    <h2>Condensed Table 1 </h2>          
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>Firstname</th>
+          <th>Lastname</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="sub-container">
+          <td><button type="button" class="btn btn-success exploder">
+        <span class="glyphicon glyphicon-plus"></span>
+      </button></td>
+          <td>John</td>
+          <td>Doe</td>
+          <td>john@example.com</td>
+        </tr>
+        <tr class="explode hide">
+          <td colspan="4" style="background: #CCC; display: none;">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Email</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>John</td>
+                    <td>Doe</td>
+                    <td>john@example.com</td>
+                  </tr>
+                  <tr>
+                    <td>Mary</td>
+                    <td>Moe</td>
+                    <td>mary@example.com</td>
+                  </tr>
+                  <tr>
+                    <td>July</td>
+                    <td>Dooley</td>
+                    <td>july@example.com</td>
+                  </tr>
+                </tbody>
+            </table>
+           </td>
+        </tr>
+        <tr class="sub-container">
+          <td><button type="button" class="btn btn-success exploder">
+        <span class="glyphicon glyphicon-plus"></span>
+      </button></td>
+          <td>John</td>
+          <td>Doe</td>
+          <td>john@example.com</td>
+        </tr>
+        <tr class="explode hide">
+          <td colspan="4" style="background: #CCC; display: none;">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th>Word</th>
+                    <th>Language</th>
+                    <th>Email</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>John</td>
+                    <td>Doe</td>
+                    <td>john@example.com</td>
+                  </tr>
+                  <tr>
+                    <td>Mary</td>
+                    <td>Moe</td>
+                    <td>mary@example.com</td>
+                  </tr>
+                  <tr>
+                    <td>July</td>
+                    <td>Dooley</td>
+                    <td>july@example.com</td>
+                  </tr>
+                </tbody>
+            </table>
+           </td>
+        </tr>
+        <tr class="sub-container">
+          <td><button type="button" class="btn btn-success exploder">
+        <span class="glyphicon glyphicon-search"></span>
+      </button></td>
+          <td>John</td>
+          <td>Doe</td>
+          <td>john@example.com</td>
+        </tr>
+        <tr class="explode hide">
+          <td colspan="4" style="background: #CCC; display: none;">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Email</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>John</td>
+                    <td>Doe</td>
+                    <td>john@example.com</td>
+                  </tr>
+                  <tr>
+                    <td>Mary</td>
+                    <td>Moe</td>
+                    <td>mary@example.com</td>
+                  </tr>
+                  <tr>
+                    <td>July</td>
+                    <td>Dooley</td>
+                    <td>july@example.com</td>
+                  </tr>
+                </tbody>
+            </table>
+           </td>
+        </tr>
+        <tr class="sub-container">
+          <td><button type="button" class="btn btn-success exploder">
+        <span class="glyphicon glyphicon-search"></span>
+      </button></td>
+          <td>John</td>
+          <td>Doe</td>
+          <td>john@example.com</td>
+        </tr>
+        <tr class="explode hide">
+          <td colspan="4" style="background: #CCC; display: none;">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Email</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>John</td>
+                    <td>Doe</td>
+                    <td>john@example.com</td>
+                  </tr>
+                  <tr>
+                    <td>Mary</td>
+                    <td>Moe</td>
+                    <td>mary@example.com</td>
+                  </tr>
+                  <tr>
+                    <td>July</td>
+                    <td>Dooley</td>
+                    <td>july@example.com</td>
+                  </tr>
+                </tbody>
+            </table>
+           </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+<script>
+    $(".exploder").click(function(){
+  
+        $(this).toggleClass("btn-success btn-danger");
+        
+        $(this).children("span").toggleClass("glyphicon-search glyphicon-zoom-out");  
+        var nxt_tr = $(this).closest("tr").next("tr");
+        nxt_tr.toggleClass("hide");
+        
+        if (nxt_tr.hasClass("hide")){
+            nxt_tr.children("td").slideUp();
+        } else {
+            nxt_tr.children("td").slideDown(350);
+        }
+});
+</script>  
+  {% endblock %}
+  {% block footer %}{% endblock %}
