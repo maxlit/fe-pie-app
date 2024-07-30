@@ -1,7 +1,3 @@
-# temporarily excluded:
-cypress
-cypress.config.js
-
 #
 *.tar
 *.db
