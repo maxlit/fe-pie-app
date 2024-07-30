@@ -35,7 +35,8 @@ flask_and_cypress:
     - poetry install
     - poetry run flask run --host=0.0.0.0 --port=5000 &
     - sleep 5  # Give Flask some time to start
-    - curl --output /dev/null --silent --head --fail http://127.0.0.1:5000/cf  # Verify Flask is running
+    - curl --output /dev/null --silent --head --fail http://127.0.0.1:5000/pie  # Verify Flask is running
+    - curl --output /dev/null --silent --head --fail http://127.0.0.1:5000/tinder  # Verify Flask is running
     - export CYPRESS_BASE_URL=http://127.0.0.1:5000
     - npm ci --prefix .  # Install Cypress dependencies if not found
     - npx cypress run
