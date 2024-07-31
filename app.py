@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for, m
 import os, time, sys
 from flask import session
 from flask_cors import CORS
+import requests
 import logging
 
 app = Flask(__name__)
@@ -45,6 +46,42 @@ def engdeu():
                            , languages = [('English', 4626), ('German', 4626)]
                            , submitted = False, selected_language = 'English', submitted_value = ""
                            )
+
+@app.route('/<proto_lang>/search', methods=['GET'])
+def search(proto_lang='pie'):
+    proto_lang = session.get('proto_lang', proto_lang)
+    session['proto_lang'] = proto_lang
+
+    term = request.args.get('w')
+    language = request.args.get('l')
+
+    # Define the API endpoint and parameters
+    api_url = f"{app.config['API_ENDPOINT']}/api/{proto_lang}/get_term_info"
+    print(api_url)
+    params = {
+        'proto_lang': proto_lang,
+        'term': term,
+        'language': language
+    }
+    # Make the GET request to the API
+    response = requests.get(api_url, params=params)
+    data = response.json()  # Directly use the response data
+
+    # Prepare the context data for the template
+    context = {
+        'debug': app.debug,
+        'proto_lang': proto_lang,
+        'languages': data.get('languages', []),
+        'results': data.get('results', []),
+        'related_words': data.get('related_words', []),
+        'submitted': data.get('submitted', False),
+        'selected_language': language,
+        'submitted_value': term,
+        'language_family': "Germanic", # simplification
+        'version': '0.0.0'  # Assume version is defined
+    }
+
+    return render_template('proto.html', **context)
 
 @app.route('/<proto_lang>/random/')
 @app.route('/<proto_lang>/random')

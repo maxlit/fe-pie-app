@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "fe-cf-app"
+name = "fe-pie-app"
 version = "0.1.0"
 description = "frontend for cash flows generator apps"
 authors = ["Maxim Litvak <maxim.litvak@gmail.com>"]
@@ -9,6 +9,7 @@ python = "<3.13,>=3.9"
 Flask = "2.2.5"
 flask-babel = "^4.0.0"
 flask-cors = "^4.0.1"
+requests = "^2.32.3"
 
 [tool.poetry.dev-dependencies]
 
