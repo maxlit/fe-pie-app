@@ -21,7 +21,7 @@ handler.setFormatter(formatter)
 # Add the handler to the logger
 app.logger.addHandler(handler)
 app.config['API_ENDPOINT'] = os.environ.get('API_ENDPOINT', 'https://langtools.io')
-CORS(app, resources={r"/*": {"origins": "https://langtools.io"}})
+CORS(app, resources={r"/*": {"origins": app.config['API_ENDPOINT']}})
 
 @app.route('/')
 def index():
@@ -30,8 +30,7 @@ def index():
 @app.route('/pie/')
 @app.route('/pie')
 def proto(proto_lang = 'pie'):
-    proto_lang == 'pie'
-    session['proto_lang'] = proto_lang    
+    #session['proto_lang'] = proto_lang    
     selected_language = 'English'  # set the selected language to English by default
     return render_template('proto.html', debug = app.debug, proto_lang = proto_lang
                            , languages=[("English", 7333), ("German", 1815)], submitted = False
@@ -47,10 +46,13 @@ def engdeu():
                            , submitted = False, selected_language = 'English', submitted_value = ""
                            )
 
+@app.route('/<proto_lang>/s', methods=['GET'])
 @app.route('/<proto_lang>/search', methods=['GET'])
-def search(proto_lang='pie'):
-    proto_lang = session.get('proto_lang', proto_lang)
+def search(proto_lang):
+    print(proto_lang)
+    #proto_lang = session.get('proto_lang', proto_lang)
     session['proto_lang'] = proto_lang
+    print(proto_lang)
 
     term = request.args.get('w')
     language = request.args.get('l')
@@ -64,24 +66,40 @@ def search(proto_lang='pie'):
         'language': language
     }
     # Make the GET request to the API
+    print(params)
     response = requests.get(api_url, params=params)
     data = response.json()  # Directly use the response data
-
+    print(data)
     # Prepare the context data for the template
-    context = {
-        'debug': app.debug,
-        'proto_lang': proto_lang,
-        'languages': data.get('languages', []),
-        'results': data.get('results', []),
-        'related_words': data.get('related_words', []),
-        'submitted': data.get('submitted', False),
-        'selected_language': language,
-        'submitted_value': term,
-        'language_family': "Germanic", # simplification
-        'version': '0.0.0'  # Assume version is defined
-    }
-
-    return render_template('proto.html', **context)
+    if proto_lang == 'pie':
+        context = {
+            'debug': app.debug,
+            'proto_lang': proto_lang,
+            'languages': data.get('languages', []),
+            'results': data.get('results', []),
+            'related_words': data.get('related_words', []),
+            'submitted': data.get('submitted', False),
+            'selected_language': language,
+            'submitted_value': term,
+            'language_family': "Germanic", # simplification
+            'version': '0.0.0'  # Assume version is defined
+        }
+    elif proto_lang in ['tinder', 'zunder']:
+        context = {
+            'proto_lang': proto_lang,
+            'languages': [('English', 4626), ('German', 4626)],
+            'results': data.get('results', []),
+            'submitted': data.get('submitted', False),
+            'selected_language': language,
+            'submitted_value': term,
+            'version': '0.0.0'  # Assume version is defined
+        }
+    if proto_lang in ['tinder', 'zunder']:
+        print('engdeu')
+        #return render_template('engdeu.html', proto_lang  = 'tinder', languages = [('English', 4626), ('German', 4626)], submitted = False, selected_language = 'English', submitted_value = "", version = '0.0.0')
+        return render_template('engdeu.html', **context)
+    else:
+        return render_template('proto.html', **context)
 
 @app.route('/<proto_lang>/random/')
 @app.route('/<proto_lang>/random')
