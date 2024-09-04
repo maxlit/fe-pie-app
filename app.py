@@ -100,12 +100,21 @@ def search(proto_lang):
         return render_template('engdeu.html', **context)
     else:
         return render_template('proto.html', **context)
+    
+def random_term():
+    import random
+    terms = ['stream', 'work', 'drink', 'think', 'thumb']
+    return random.choice(terms)
 
 @app.route('/<proto_lang>/random/')
 @app.route('/<proto_lang>/random')
 def random(proto_lang):
-    app.logger.info("random")
-    proto_lang = session.get('proto_lang', proto_lang)
     language = request.args.get('l')
-    term = "strength"
+    term = random_term()
     return redirect(url_for("search", proto_lang = proto_lang, l=language, w=term))
+
+@app.route('/tinder/r')
+def rnd(pair = 'engdeu'):
+    language = request.args.get('l')
+    term = random_term()
+    return redirect(url_for("search", proto_lang  = 'tinder', l=language, w=term))
